@@ -10,7 +10,8 @@ public class Ball : MonoBehaviour
         switch(tag)
         {
             case "Dead":
-                GameManager.instance.GameEnd();
+                //GameManager.instance.GameEnd();
+                GameManager.instance.BallLoss();
                 break;
 
             case "Bouncer":
