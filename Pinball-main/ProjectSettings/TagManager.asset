@@ -8,6 +8,7 @@ TagManager:
   - Point
   - Flipper
   - Bouncer
+  - BallBase
   layers:
   - Default
   - TransparentFX

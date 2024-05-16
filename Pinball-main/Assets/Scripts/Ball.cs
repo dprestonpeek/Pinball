@@ -55,7 +55,6 @@ public class Ball : MonoBehaviour
             case "Flipper":
                 GameManager.instance.multiplier = 1;
                 break;
-
             default:
                 break;
         }

@@ -23,7 +23,7 @@ public class GameManager : MonoBehaviour
     int score, highScore, prevHighScore;
 
     [SerializeField]
-    Rigidbody2D left, right;
+    Rigidbody2D left, left2, right;
 
     [SerializeField]
     Transform startPos;
@@ -76,7 +76,14 @@ public class GameManager : MonoBehaviour
             }
             else if (startSequence.DrawingSpring)
             {
-                startSequence.LaunchBall(activeBall.GetComponent<Rigidbody2D>());
+                if (activeBall.transform.position.y < -5.5f)
+                {
+                    startSequence.LaunchBall(activeBall.GetComponent<Rigidbody2D>());
+                }
+                else
+                {
+                    startSequence.ResetSpring();
+                }
             }
         }
         else
@@ -89,10 +96,12 @@ public class GameManager : MonoBehaviour
             if (Input.GetKey(KeyCode.Q))
             {
                 left.AddTorque(25f * torqueMultiplier);
+                left2.AddTorque(25f * torqueMultiplier);
             }
             else
             {
                 left.AddTorque(-20f * torqueMultiplier);
+                left2.AddTorque(-20f * torqueMultiplier);
             }
             if (Input.GetKey(KeyCode.P))
             {
@@ -101,6 +110,10 @@ public class GameManager : MonoBehaviour
             else
             {
                 right.AddTorque(20f * torqueMultiplier);
+            }
+            if (Input.GetKey(KeyCode.Space))
+            {
+                TableBump();
             }
         }
         else
@@ -144,6 +157,12 @@ public class GameManager : MonoBehaviour
         {
             text.text = score.ToString();
         }
+    }
+
+    private void TableBump()
+    {
+        Rigidbody2D rb = activeBall.GetComponent<Rigidbody2D>();
+        rb.AddForce(Vector2.down * 10);
     }
 
     public void GameEnd()
@@ -213,7 +232,6 @@ public class GameManager : MonoBehaviour
         canPlay = false;
         gameStarted = false;
         GameStart();
-        life1.SetActive(true);
         life2.SetActive(true);
         life3.SetActive(true);
         //UnityEngine.SceneManagement.SceneManager.LoadScene(0);

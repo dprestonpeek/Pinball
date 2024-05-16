@@ -64,9 +64,4 @@ public class Bumper : MonoBehaviour
             growInSize = false;
         }
     }
-
-    private void OnCollisionExit2D(Collision2D collision)
-    {
-        bumpDirection = collision.rigidbody.velocity;
-    }
 }

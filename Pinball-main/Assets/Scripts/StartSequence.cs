@@ -36,10 +36,18 @@ public class StartSequence : MonoBehaviour
 
     public void LaunchBall(Rigidbody2D target)
     {
-        target.simulated = true;
-        target.AddForce(Vector2.up * (1 - spring.value) * launchMultiplier);
+        if (target)
+        {
+            target.simulated = true;
+            target.AddForce(Vector2.up * (1 - spring.value) * launchMultiplier);
+        }
         DrawingSpring = false;
         LaunchingBall = true;
+        spring.value = 1;
+    }
+
+    public void ResetSpring()
+    {
         spring.value = 1;
     }
 
