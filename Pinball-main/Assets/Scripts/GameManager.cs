@@ -13,17 +13,20 @@ public class GameManager : MonoBehaviour
     GameObject startGame, endGame;
 
     [SerializeField]
+    StartSequence startSequence;
+
+    [SerializeField]
     List<TMP_Text> bestScores;
     [SerializeField]
     List<TMP_Text> scores;
 
-    int score, highScore;
+    int score, highScore, prevHighScore;
 
     [SerializeField]
     Rigidbody2D left, right;
 
     [SerializeField]
-    Vector3 startPos;
+    Transform startPos;
 
     GameObject activeBall;
 
@@ -32,9 +35,9 @@ public class GameManager : MonoBehaviour
 
     public int multiplier;
 
-    private int torqueMultiplier = 6;
+    private int torqueMultiplier = 15;
 
-    bool canPlay, gameOver;
+    bool gameStarted, gameOver, starting, canPlay;
 
     public static GameManager instance;
 
@@ -51,17 +54,36 @@ public class GameManager : MonoBehaviour
 
         score = 0;
         multiplier = 1;
-        highScore = PlayerPrefs.HasKey("HighScore") ? PlayerPrefs.GetInt("HighScore") : 0;
+        highScore = PlayerPrefs.GetInt("Best");
+        prevHighScore = highScore;
         foreach (TMP_Text text in bestScores)
         {
             text.text = highScore.ToString();
         }
 
+        gameStarted = false;
         canPlay = false;
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
+        if (!startSequence.DoneStartup)
+        {
+            if (Input.GetKey(KeyCode.Return) && gameStarted)
+            {
+                startSequence.DrawSpring();
+                starting = true;
+            }
+            else if (startSequence.DrawingSpring)
+            {
+                startSequence.LaunchBall(activeBall.GetComponent<Rigidbody2D>());
+            }
+        }
+        else
+        {
+            starting = false;
+            canPlay = true;
+        }
         if (canPlay)
         {
             if (Input.GetKey(KeyCode.Q))
@@ -93,7 +115,7 @@ public class GameManager : MonoBehaviour
             }
             else
             {
-                if (Input.GetKey(KeyCode.Space))
+                if (Input.GetKey(KeyCode.Space) && !gameStarted)
                 {
                     GameStart();
                 }
@@ -105,6 +127,11 @@ public class GameManager : MonoBehaviour
     {
         multiplier += mullIncrease;
         score += point * multiplier;
+        UpdateScore();
+    }
+
+    private void UpdateScore()
+    {
         if (score > highScore)
         {
             highScore = score;
@@ -122,14 +149,14 @@ public class GameManager : MonoBehaviour
     public void GameEnd()
     {
         endGame.SetActive(true);
-        if(score > highScore)
+        if(highScore > prevHighScore)
         {
-            PlayerPrefs.SetInt("HighScore", score);
             highScore = score;
+            PlayerPrefs.SetInt("Best", highScore);
 
             foreach (TMP_Text text in bestScores)
             {
-                text.text = score.ToString();
+                text.text = highScore.ToString();
             }
         }
         gameOver = true;
@@ -139,6 +166,21 @@ public class GameManager : MonoBehaviour
     {
         canPlay = false;
         Destroy(activeBall);
+        startSequence.SetupStartup();
+        if (!life3.activeSelf)
+        {
+            GameEnd();
+        }
+        else
+        {
+            GameStart();
+        }
+    }
+
+    public void GameStart()
+    {
+        startGame.SetActive(false);
+        activeBall = Instantiate(ball, startPos.position, Quaternion.identity);
         if (life1.activeSelf)
         {
             life1.SetActive(false);
@@ -150,16 +192,8 @@ public class GameManager : MonoBehaviour
         else if (life3.activeSelf)
         {
             life3.SetActive(false);
-            GameEnd();
         }
-    }
-
-    public void GameStart()
-    {
-        startGame.SetActive(false);
-        activeBall = Instantiate(ball, new Vector2(startPos.x + Random.Range(-0.5f, 0.5f), startPos.y), Quaternion.identity);
-        activeBall.GetComponent<Rigidbody2D>().AddForce(new Vector2(Random.Range(-10, 10), Random.Range(-10, 10)), ForceMode2D.Impulse);
-        canPlay = true;
+        gameStarted = true;
     }
 
     public void GameQuit()
@@ -174,8 +208,14 @@ public class GameManager : MonoBehaviour
     {
         endGame.SetActive(false);
         score = 0;
-        GameStart();
+        UpdateScore();
         gameOver = false;
+        canPlay = false;
+        gameStarted = false;
+        GameStart();
+        life1.SetActive(true);
+        life2.SetActive(true);
+        life3.SetActive(true);
         //UnityEngine.SceneManagement.SceneManager.LoadScene(0);
     }
 }

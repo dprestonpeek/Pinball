@@ -11,6 +11,8 @@ GameObject:
   - component: {fileID: 5243515821332038537}
   - component: {fileID: 8803962994919560925}
   - component: {fileID: 2511399525706213385}
+  - component: {fileID: 155622678021022117}
+  - component: {fileID: 3190541233654850303}
   m_Layer: 0
   m_Name: Point
   m_TagString: Point
@@ -96,6 +98,39 @@ CircleCollider2D:
   m_Density: 1
   m_Material: {fileID: 6200000, guid: 3e48b22f84fc8d14591e76d14df1051b, type: 2}
   m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.6328125
+--- !u!114 &155622678021022117
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5593748415064043971}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 12a535f4496f43647a2c75d578f41445, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scaleIncrement: 0.025
+  scaleMax: 1.1
+  bumpForce: 1
+  bumpDirection: {x: 0, y: 0}
+  useTarget: 1
+--- !u!58 &3190541233654850303
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5593748415064043971}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
