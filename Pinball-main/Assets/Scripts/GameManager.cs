@@ -41,6 +41,11 @@ public class GameManager : MonoBehaviour
 
     public static GameManager instance;
 
+    [SerializeField]
+    AudioSource flipperLeftUp, flipperLeftDown, flipperRightUp, flipperRightDown;
+    [SerializeField]
+    AudioClip flipperUp, flipperDown;
+
     private void Awake()
     {
         if(instance == null)
@@ -60,6 +65,12 @@ public class GameManager : MonoBehaviour
         {
             text.text = highScore.ToString();
         }
+        AudioSource[] leftFlipperSFX = left.GetComponents<AudioSource>();
+        flipperLeftUp = leftFlipperSFX[0];
+        flipperLeftDown = leftFlipperSFX[1];
+        AudioSource[] rightFlipperSFX = right.GetComponents<AudioSource>();
+        flipperRightUp = rightFlipperSFX[0];
+        flipperRightDown = rightFlipperSFX[1];
 
         gameStarted = false;
         canPlay = false;
@@ -76,7 +87,7 @@ public class GameManager : MonoBehaviour
             }
             else if (startSequence.DrawingSpring)
             {
-                if (activeBall.transform.position.y < -5.5f)
+                if (activeBall && activeBall.transform.position.y < -5.5f)
                 {
                     startSequence.LaunchBall(activeBall.GetComponent<Rigidbody2D>());
                 }
@@ -103,6 +114,14 @@ public class GameManager : MonoBehaviour
                 left.AddTorque(-20f * torqueMultiplier);
                 left2.AddTorque(-20f * torqueMultiplier);
             }
+            if (Input.GetKeyDown(KeyCode.Q))
+            {
+                flipperLeftUp.PlayOneShot(flipperUp);
+            }
+            if (Input.GetKeyUp(KeyCode.Q))
+            {
+                flipperLeftDown.PlayOneShot(flipperDown);
+            }
             if (Input.GetKey(KeyCode.P))
             {
                 right.AddTorque(-25f * torqueMultiplier);
@@ -110,6 +129,14 @@ public class GameManager : MonoBehaviour
             else
             {
                 right.AddTorque(20f * torqueMultiplier);
+            }
+            if (Input.GetKeyDown(KeyCode.P))
+            {
+                flipperRightUp.PlayOneShot(flipperUp);
+            }
+            if (Input.GetKeyUp(KeyCode.P))
+            {
+                flipperRightDown.PlayOneShot(flipperDown);
             }
             if (Input.GetKey(KeyCode.Space))
             {

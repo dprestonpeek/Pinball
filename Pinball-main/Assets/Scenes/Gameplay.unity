@@ -353,6 +353,10 @@ PrefabInstance:
       propertyPath: m_Material
       value: 
       objectReference: {fileID: 6200000, guid: 72cf876aa6f56934a9855a778f965920, type: 2}
+    - target: {fileID: 4587036564847986402, guid: 8717c5e52ea3f6044a960e20df9e86fa, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8992606210338654897, guid: 8717c5e52ea3f6044a960e20df9e86fa, type: 3}
       propertyPath: m_Name
       value: Bouncer
@@ -540,6 +544,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1283157285}
     m_Modifications:
+    - target: {fileID: -264297640696573073, guid: 763528ec8bf3f714dafb299678bb2be4, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2511399525706213385, guid: 763528ec8bf3f714dafb299678bb2be4, type: 3}
       propertyPath: m_Material
       value: 
@@ -752,6 +760,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1283157285}
     m_Modifications:
+    - target: {fileID: -4025389604342949129, guid: d5ef8368d2d77f34dab6ee56449ef0b0, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 900583446791262752, guid: d5ef8368d2d77f34dab6ee56449ef0b0, type: 3}
       propertyPath: m_ConnectedAnchor.x
       value: 3.05
@@ -979,6 +991,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1283157285}
     m_Modifications:
+    - target: {fileID: -264297640696573073, guid: 763528ec8bf3f714dafb299678bb2be4, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2511399525706213385, guid: 763528ec8bf3f714dafb299678bb2be4, type: 3}
       propertyPath: m_Material
       value: 
@@ -1885,13 +1901,17 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1283157285}
     m_Modifications:
+    - target: {fileID: -4025389604342949129, guid: d5ef8368d2d77f34dab6ee56449ef0b0, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 900583446791262752, guid: d5ef8368d2d77f34dab6ee56449ef0b0, type: 3}
       propertyPath: m_ConnectedAnchor.x
-      value: -3.05
+      value: -4.739254
       objectReference: {fileID: 0}
     - target: {fileID: 900583446791262752, guid: d5ef8368d2d77f34dab6ee56449ef0b0, type: 3}
       propertyPath: m_ConnectedAnchor.y
-      value: -8.125
+      value: 2.7986164
       objectReference: {fileID: 0}
     - target: {fileID: 900583446791262752, guid: d5ef8368d2d77f34dab6ee56449ef0b0, type: 3}
       propertyPath: m_AngleLimits.m_UpperAngle
@@ -2968,6 +2988,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1283157285}
     m_Modifications:
+    - target: {fileID: -4025389604342949129, guid: d5ef8368d2d77f34dab6ee56449ef0b0, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 900583446791262752, guid: d5ef8368d2d77f34dab6ee56449ef0b0, type: 3}
       propertyPath: m_ConnectedAnchor.x
       value: -3.05
@@ -3741,6 +3765,7 @@ GameObject:
   - component: {fileID: 1535870238}
   - component: {fileID: 1535870239}
   - component: {fileID: 1535870240}
+  - component: {fileID: 1535870241}
   m_Layer: 0
   m_Name: EndStartSequence
   m_TagString: Untagged
@@ -3808,9 +3833,106 @@ MonoBehaviour:
   permLower: {fileID: 1023946246}
   spring: {fileID: 936438425}
   launchMultiplier: 1000
+  boing: {fileID: 8300000, guid: 8021466fff082864bad73f449712ed13, type: 3}
   DrawingSpring: 0
   LaunchingBall: 0
   DoneStartup: 0
+--- !u!82 &1535870241
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1535870237}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: 8021466fff082864bad73f449712ed13, type: 3}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!4 &1545423969 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2782187883765324182, guid: d5ef8368d2d77f34dab6ee56449ef0b0, type: 3}
@@ -4066,6 +4188,10 @@ PrefabInstance:
       propertyPath: m_LocalPosition.x
       value: 0.05
       objectReference: {fileID: 0}
+    - target: {fileID: 4587036564847986402, guid: 8717c5e52ea3f6044a960e20df9e86fa, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8992606210338654897, guid: 8717c5e52ea3f6044a960e20df9e86fa, type: 3}
       propertyPath: m_Name
       value: Bouncer (1)
@@ -4136,6 +4262,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1283157285}
     m_Modifications:
+    - target: {fileID: -264297640696573073, guid: 763528ec8bf3f714dafb299678bb2be4, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2511399525706213385, guid: 763528ec8bf3f714dafb299678bb2be4, type: 3}
       propertyPath: m_Material
       value: 
@@ -4455,6 +4585,12 @@ MonoBehaviour:
   life2: {fileID: 204641284}
   life3: {fileID: 2061816218}
   multiplier: 0
+  flipperLeftUp: {fileID: 0}
+  flipperLeftDown: {fileID: 0}
+  flipperRightUp: {fileID: 0}
+  flipperRightDown: {fileID: 0}
+  flipperUp: {fileID: 8300000, guid: e9cbdb33140fa5c45aa5cfc48e36a2ad, type: 3}
+  flipperDown: {fileID: 8300000, guid: 4be65fdbb4201a84dbe209e6266fa697, type: 3}
 --- !u!4 &1878655568
 Transform:
   m_ObjectHideFlags: 0

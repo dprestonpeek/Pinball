@@ -19,10 +19,15 @@ public class Bumper : MonoBehaviour
     private bool growInSize = false;
     private Vector2 initScale = Vector2.one;
 
+    AudioSource audioSource;
+    [SerializeField]
+    AudioClip soundEffect;
+
     // Start is called before the first frame update
     void Start()
     {
         initScale = transform.localScale;
+        audioSource = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -47,6 +52,7 @@ public class Bumper : MonoBehaviour
         {
             bumpDirection = Vector2.zero;
         }
+        audioSource.PlayOneShot(soundEffect);
     }
 
     private void GrowInSize(float maxScale, float increment)

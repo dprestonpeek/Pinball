@@ -8,9 +8,14 @@ public class Ball : MonoBehaviour
     float maxVelocity = 50;
     Rigidbody2D rb;
 
+    AudioSource audioSource;
+    [SerializeField]
+    AudioClip ballThud;
+
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        audioSource = GetComponent<AudioSource>();
     }
 
     private void Update()
@@ -50,12 +55,14 @@ public class Ball : MonoBehaviour
 
             case "Side":
                 GameManager.instance.UpdateScore(10, 0);
+                audioSource.PlayOneShot(ballThud);
                 break;
 
             case "Flipper":
                 GameManager.instance.multiplier = 1;
                 break;
             default:
+                audioSource.PlayOneShot(ballThud);
                 break;
         }
     }

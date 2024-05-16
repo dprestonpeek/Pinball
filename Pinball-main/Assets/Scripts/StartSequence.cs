@@ -13,6 +13,10 @@ public class StartSequence : MonoBehaviour
     [SerializeField]
     float launchMultiplier = 10f;
 
+    AudioSource audioSource;
+    [SerializeField]
+    AudioClip boing;
+
     public bool DrawingSpring = false;
     public bool LaunchingBall = false;
     public bool DoneStartup = false;
@@ -20,7 +24,7 @@ public class StartSequence : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        audioSource = GetComponent<AudioSource>();   
     }
 
     // Update is called once per frame
@@ -43,12 +47,13 @@ public class StartSequence : MonoBehaviour
         }
         DrawingSpring = false;
         LaunchingBall = true;
-        spring.value = 1;
+        ResetSpring();
     }
 
     public void ResetSpring()
     {
         spring.value = 1;
+        audioSource.PlayOneShot(boing);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
