@@ -78,7 +78,7 @@ public class GameManager : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (!startSequence.DoneStartup)
+        if (!startSequence.DoneStartup && !gameOver)
         {
             if (Input.GetKey(KeyCode.Return) && gameStarted)
             {

@@ -368,7 +368,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   scaleIncrement: 0.033
   scaleMax: 0.9
-  bumpForce: 0.9
+  bumpForce: 1
   bumpDirection: {x: -1, y: 1}
   useTarget: 0
   soundEffect: {fileID: 8300000, guid: 8021466fff082864bad73f449712ed13, type: 3}
