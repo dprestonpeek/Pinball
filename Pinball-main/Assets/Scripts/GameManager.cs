@@ -200,10 +200,7 @@ public class GameManager : MonoBehaviour
             highScore = score;
             PlayerPrefs.SetInt("Best", highScore);
 
-            foreach (TMP_Text text in bestScores)
-            {
-                text.text = highScore.ToString();
-            }
+            UpdateScore();
         }
         gameOver = true;
     }
