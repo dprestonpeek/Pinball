@@ -71,7 +71,9 @@ public class ScaleScreen : MonoBehaviour
     {
         PlayerPrefs.SetFloat("gameScale", gameScale);
         scaleScreen.SetActive(false);
+        GameManager.instance.ActivateStartGame(true);
         screenScaleSet = true;
+        GameManager.instance.optionScreenScale = true;
     }
 
     private string GetNewGameScaleValue(float gameScale)

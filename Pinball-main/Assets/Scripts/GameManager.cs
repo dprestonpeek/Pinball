@@ -36,6 +36,8 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     Transform parent;
 
+    GoogleConnect google;
+
     public int multiplier;
 
     private int torqueMultiplier = 15;
@@ -49,9 +51,19 @@ public class GameManager : MonoBehaviour
     bool settingScreenScale = false;
 
     [SerializeField]
+    Username setUsername;
+    public static bool usernameSet = false;
+    public static bool usernameDirty = false;
+
+    [SerializeField]
     AudioSource flipperLeftUp, flipperLeftDown, flipperRightUp, flipperRightDown;
     [SerializeField]
     AudioClip flipperUp, flipperDown;
+
+    public bool soundOn = true;
+    public bool optionScreenScale = false;
+    public bool optionUsername = false;
+    public bool optionSound = false;
 
     private void Awake()
     {
@@ -82,17 +94,48 @@ public class GameManager : MonoBehaviour
         gameStarted = false;
         canPlay = false;
 
-        CheckGameScale();
+        google = new GoogleConnect();
+        //CheckOptions();
     }
 
     private void FixedUpdate()
     {
+        if (!optionScreenScale)
+        {
+            CheckGameScale();
+        }
+        else if (!optionUsername)
+        {
+            if (!settingScreenScale)
+            {
+                setUsername.Check();
+            }
+        }
+        else if (!optionSound)
+        {
+            CheckSound();
+        }
         if (settingScreenScale)
         {
             if (scaleScreen.screenScaleSet)
             {
                 startGame.SetActive(true);
                 settingScreenScale = false;
+                if (!usernameSet)
+                {
+                    setUsername.Check();
+                }
+                else
+                {
+                    startGame.SetActive(true);
+                }
+            }
+        }
+        else if (setUsername.changing)
+        {
+            if (usernameSet)
+            {
+                startGame.SetActive(true);
             }
         }
         if (!startSequence.DoneStartup && !gameOver)
@@ -205,8 +248,11 @@ public class GameManager : MonoBehaviour
 
     private void TableBump()
     {
-        Rigidbody2D rb = activeBall.GetComponent<Rigidbody2D>();
-        rb.AddForce(Vector2.down * 10);
+        if (activeBall)
+        {
+            Rigidbody2D rb = activeBall.GetComponent<Rigidbody2D>();
+            rb.AddForce(Vector2.down * 10);
+        }
     }
 
     public void GameEnd()
@@ -216,11 +262,12 @@ public class GameManager : MonoBehaviour
         {
             highScore = score;
             PlayerPrefs.SetInt("Best", highScore);
-
             UpdateScore();
+            google.SendHighScore(setUsername.username, highScore);
         }
         gameOver = true;
         gameStarted = false;
+        canPlay = false;
     }
 
     public void BallLoss()
@@ -242,7 +289,7 @@ public class GameManager : MonoBehaviour
     {
         startGame.SetActive(false);
         activeBall = Instantiate(ball, startPos.position, Quaternion.identity, parent);
-        activeBall.transform.localScale = Vector3.one * (scaleScreen.gameScale - .25f);
+        activeBall.transform.localScale = Vector3.one * .75f;
         if (life1.activeSelf)
         {
             life1.SetActive(false);
@@ -256,6 +303,11 @@ public class GameManager : MonoBehaviour
             life3.SetActive(false);
         }
         gameStarted = true;
+    }
+
+    public void ActivateStartGame(bool activate)
+    {
+        startGame.SetActive(activate);
     }
 
     public void GameQuit()
@@ -280,20 +332,70 @@ public class GameManager : MonoBehaviour
         //UnityEngine.SceneManagement.SceneManager.LoadScene(0);
     }
 
+    private void CheckOptions()
+    {
+        CheckGameScale();
+        if (!settingScreenScale)
+        {
+            setUsername.Check();
+        }
+        if (PlayerPrefs.HasKey("soundon"))
+        {
+            int sound = PlayerPrefs.GetInt("soundon");
+            if (sound == 0)
+            {
+                soundOn = false;
+            }
+            else
+            {
+                soundOn = true;
+            }
+            optionSound = true;
+        }
+        else
+        {
+            PlayerPrefs.SetInt("soundon", 1);
+            optionSound = true;
+        }
+    }
+
+    private void CheckSound()
+    {
+        if (PlayerPrefs.HasKey("soundon"))
+        {
+            int sound = PlayerPrefs.GetInt("soundon");
+            if (sound == 0)
+            {
+                soundOn = false;
+            }
+            else
+            {
+                soundOn = true;
+            }
+            optionSound = true;
+        }
+        else
+        {
+            PlayerPrefs.SetInt("soundon", 1);
+            optionSound = true;
+        }
+    }
+
     private void CheckGameScale()
     {
         if (PlayerPrefs.HasKey("gameScale"))
         {
             float gameScale = PlayerPrefs.GetFloat("gameScale");
             scaleScreen.SetScreenScale(gameScale);
+            optionScreenScale = true;
         }
         else
         {
-            ResetGameScale();
+            ResetGameScaleStart();
         }
     }
 
-    public void ResetGameScale()
+    public void ResetGameScaleStart()
     {
         scaleScreen.screenScaleSet = false;
         startGame.SetActive(false);

@@ -9,6 +9,7 @@ TagManager:
   - Flipper
   - Bouncer
   - BallBase
+  - username
   layers:
   - Default
   - TransparentFX
