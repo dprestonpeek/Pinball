@@ -33,6 +33,9 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     GameObject life1, life2, life3;
 
+    [SerializeField]
+    Transform parent;
+
     public int multiplier;
 
     private int torqueMultiplier = 15;
@@ -40,6 +43,10 @@ public class GameManager : MonoBehaviour
     bool gameStarted, gameOver, starting, canPlay;
 
     public static GameManager instance;
+
+    [SerializeField]
+    private ScaleScreen scaleScreen;
+    bool settingScreenScale = false;
 
     [SerializeField]
     AudioSource flipperLeftUp, flipperLeftDown, flipperRightUp, flipperRightDown;
@@ -74,10 +81,20 @@ public class GameManager : MonoBehaviour
 
         gameStarted = false;
         canPlay = false;
+
+        CheckGameScale();
     }
 
     private void FixedUpdate()
     {
+        if (settingScreenScale)
+        {
+            if (scaleScreen.screenScaleSet)
+            {
+                startGame.SetActive(true);
+                settingScreenScale = false;
+            }
+        }
         if (!startSequence.DoneStartup && !gameOver)
         {
             if (Input.GetKey(KeyCode.Return) && gameStarted)
@@ -203,6 +220,7 @@ public class GameManager : MonoBehaviour
             UpdateScore();
         }
         gameOver = true;
+        gameStarted = false;
     }
 
     public void BallLoss()
@@ -223,7 +241,8 @@ public class GameManager : MonoBehaviour
     public void GameStart()
     {
         startGame.SetActive(false);
-        activeBall = Instantiate(ball, startPos.position, Quaternion.identity);
+        activeBall = Instantiate(ball, startPos.position, Quaternion.identity, parent);
+        activeBall.transform.localScale = Vector3.one * (scaleScreen.gameScale - .25f);
         if (life1.activeSelf)
         {
             life1.SetActive(false);
@@ -259,5 +278,26 @@ public class GameManager : MonoBehaviour
         life2.SetActive(true);
         life3.SetActive(true);
         //UnityEngine.SceneManagement.SceneManager.LoadScene(0);
+    }
+
+    private void CheckGameScale()
+    {
+        if (PlayerPrefs.HasKey("gameScale"))
+        {
+            float gameScale = PlayerPrefs.GetFloat("gameScale");
+            scaleScreen.SetScreenScale(gameScale);
+        }
+        else
+        {
+            ResetGameScale();
+        }
+    }
+
+    public void ResetGameScale()
+    {
+        scaleScreen.screenScaleSet = false;
+        startGame.SetActive(false);
+        settingScreenScale = true;
+        scaleScreen.ShowScaleScreen();
     }
 }
