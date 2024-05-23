@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -36,7 +37,7 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     Transform parent;
 
-    GoogleConnect google;
+    public GoogleConnect google;
 
     public int multiplier;
 
@@ -45,6 +46,8 @@ public class GameManager : MonoBehaviour
     bool gameStarted, gameOver, starting, canPlay;
 
     public static GameManager instance;
+    [SerializeField]
+    public HighScoreManager hsManager;
 
     [SerializeField]
     private ScaleScreen scaleScreen;
@@ -64,8 +67,9 @@ public class GameManager : MonoBehaviour
     public bool optionScreenScale = false;
     public bool optionUsername = false;
     public bool optionSound = false;
+    public bool startScreen = false;
 
-    private void Awake()
+    private void Start()
     {
         if(instance == null)
         {
@@ -84,6 +88,7 @@ public class GameManager : MonoBehaviour
         {
             text.text = highScore.ToString();
         }
+        hsManager = GetComponent<HighScoreManager>();
         AudioSource[] leftFlipperSFX = left.GetComponents<AudioSource>();
         flipperLeftUp = leftFlipperSFX[0];
         flipperLeftDown = leftFlipperSFX[1];
@@ -95,11 +100,15 @@ public class GameManager : MonoBehaviour
         canPlay = false;
 
         google = new GoogleConnect();
-        //CheckOptions();
     }
 
     private void FixedUpdate()
     {
+        //if (!startScreen)
+        //{
+        //    ActivateStartGame(true);
+        //    startScreen = false;
+        //}
         if (!optionScreenScale)
         {
             CheckGameScale();
@@ -119,7 +128,7 @@ public class GameManager : MonoBehaviour
         {
             if (scaleScreen.screenScaleSet)
             {
-                startGame.SetActive(true);
+                ActivateStartGame(true);
                 settingScreenScale = false;
                 if (!usernameSet)
                 {
@@ -127,7 +136,7 @@ public class GameManager : MonoBehaviour
                 }
                 else
                 {
-                    startGame.SetActive(true);
+                    ActivateStartGame(true);
                 }
             }
         }
@@ -135,7 +144,7 @@ public class GameManager : MonoBehaviour
         {
             if (usernameSet)
             {
-                startGame.SetActive(true);
+                ActivateStartGame(true);
             }
         }
         if (!startSequence.DoneStartup && !gameOver)
@@ -287,7 +296,7 @@ public class GameManager : MonoBehaviour
 
     public void GameStart()
     {
-        startGame.SetActive(false);
+        ActivateStartGame(false);
         activeBall = Instantiate(ball, startPos.position, Quaternion.identity, parent);
         activeBall.transform.localScale = Vector3.one * .75f;
         if (life1.activeSelf)
@@ -307,6 +316,10 @@ public class GameManager : MonoBehaviour
 
     public void ActivateStartGame(bool activate)
     {
+        //if (activate)
+        //{
+        //    hsManager.WriteHighScoreTable();
+        //}
         startGame.SetActive(activate);
     }
 
@@ -398,7 +411,7 @@ public class GameManager : MonoBehaviour
     public void ResetGameScaleStart()
     {
         scaleScreen.screenScaleSet = false;
-        startGame.SetActive(false);
+        ActivateStartGame(false);
         settingScreenScale = true;
         scaleScreen.ShowScaleScreen();
     }
