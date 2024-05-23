@@ -11,17 +11,6 @@ public class GoogleConnect : MonoBehaviour
     string formUrl = "https://docs.google.com/forms/u/0/d/e/1FAIpQLSdqEP2h6aFEaj4vfD5VHs4l6M7SrULrDNHM3RCljVAdJFoJmw/formResponse";
 
     public bool fetching = false;
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 
     public void SendHighScore(string name, int score)
     {

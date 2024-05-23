@@ -18,7 +18,7 @@ public class Ball : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         if (rb)
         {

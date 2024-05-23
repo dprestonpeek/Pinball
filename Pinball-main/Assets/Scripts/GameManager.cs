@@ -11,6 +11,9 @@ public class GameManager : MonoBehaviour
     GameObject ball,startButton,quitButton;
 
     [SerializeField]
+    GameObject touchControls;
+
+    [SerializeField]
     GameObject startGame, endGame;
 
     [SerializeField]
@@ -43,7 +46,8 @@ public class GameManager : MonoBehaviour
 
     private int torqueMultiplier = 15;
 
-    bool gameStarted, gameOver, starting, canPlay;
+    bool gameStarted, gameOver, canPlay;
+    public bool starting;
 
     public static GameManager instance;
     [SerializeField]
@@ -104,11 +108,6 @@ public class GameManager : MonoBehaviour
 
     private void FixedUpdate()
     {
-        //if (!startScreen)
-        //{
-        //    ActivateStartGame(true);
-        //    startScreen = false;
-        //}
         if (!optionScreenScale)
         {
             CheckGameScale();
@@ -149,7 +148,14 @@ public class GameManager : MonoBehaviour
         }
         if (!startSequence.DoneStartup && !gameOver)
         {
-            if (Input.GetKey(KeyCode.Return) && gameStarted)
+            if (!startGame.activeSelf)
+            {
+                if (!touchControls.activeInHierarchy)
+                {
+                    touchControls.SetActive(true);
+                }
+            }
+            if (InputBridge.Instance.InputReturn() && gameStarted)
             {
                 startSequence.DrawSpring();
                 starting = true;
@@ -173,7 +179,7 @@ public class GameManager : MonoBehaviour
         }
         if (canPlay)
         {
-            if (Input.GetKey(KeyCode.Q))
+            if (InputBridge.Instance.InputLeft())
             {
                 left.AddTorque(25f * torqueMultiplier);
                 left2.AddTorque(25f * torqueMultiplier);
@@ -183,15 +189,15 @@ public class GameManager : MonoBehaviour
                 left.AddTorque(-20f * torqueMultiplier);
                 left2.AddTorque(-20f * torqueMultiplier);
             }
-            if (Input.GetKeyDown(KeyCode.Q))
+            if (InputBridge.Instance.InputLeftDown())
             {
                 flipperLeftUp.PlayOneShot(flipperUp);
             }
-            if (Input.GetKeyUp(KeyCode.Q))
+            if (InputBridge.Instance.InputLeftUp())
             {
                 flipperLeftDown.PlayOneShot(flipperDown);
             }
-            if (Input.GetKey(KeyCode.P))
+            if (InputBridge.Instance.InputRight())
             {
                 right.AddTorque(-25f * torqueMultiplier);
             }
@@ -199,11 +205,11 @@ public class GameManager : MonoBehaviour
             {
                 right.AddTorque(20f * torqueMultiplier);
             }
-            if (Input.GetKeyDown(KeyCode.P))
+            if (InputBridge.Instance.InputRightDown())
             {
                 flipperRightUp.PlayOneShot(flipperUp);
             }
-            if (Input.GetKeyUp(KeyCode.P))
+            if (InputBridge.Instance.InputRightUp())
             {
                 flipperRightDown.PlayOneShot(flipperDown);
             }
@@ -221,6 +227,7 @@ public class GameManager : MonoBehaviour
                     GameRestart();
                     gameOver = false;
                 }
+                touchControls.SetActive(false);
             }
             else
             {
@@ -414,5 +421,25 @@ public class GameManager : MonoBehaviour
         ActivateStartGame(false);
         settingScreenScale = true;
         scaleScreen.ShowScaleScreen();
+    }
+
+    public void FlipperLeftUp()
+    {
+        flipperLeftUp.PlayOneShot(flipperUp);
+    }
+
+    public void FlipperLeftDown()
+    {
+        flipperLeftDown.PlayOneShot(flipperDown);
+    }
+
+    public void FlipperRightUp()
+    {
+        flipperRightUp.PlayOneShot(flipperUp);
+    }
+
+    public void FlipperRightDown()
+    {
+        flipperRightDown.PlayOneShot(flipperDown);
     }
 }
