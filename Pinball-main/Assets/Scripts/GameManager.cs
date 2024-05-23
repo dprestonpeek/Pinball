@@ -46,7 +46,7 @@ public class GameManager : MonoBehaviour
 
     private int torqueMultiplier = 15;
 
-    bool gameStarted, gameOver, canPlay;
+    bool gameStarted, gameOver, canPlay, options;
     public bool starting;
 
     public static GameManager instance;
@@ -75,6 +75,7 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        PlayerPrefs.DeleteAll();
         if(instance == null)
         {
             instance = this;
@@ -110,10 +111,12 @@ public class GameManager : MonoBehaviour
     {
         if (!optionScreenScale)
         {
+            touchControls.SetActive(false);
             CheckGameScale();
         }
         else if (!optionUsername)
         {
+            touchControls.SetActive(false);
             if (!settingScreenScale)
             {
                 setUsername.Check();
@@ -121,10 +124,12 @@ public class GameManager : MonoBehaviour
         }
         else if (!optionSound)
         {
+            touchControls.SetActive(false);
             CheckSound();
         }
         if (settingScreenScale)
         {
+            touchControls.SetActive(false);
             if (scaleScreen.screenScaleSet)
             {
                 ActivateStartGame(true);
@@ -141,12 +146,13 @@ public class GameManager : MonoBehaviour
         }
         else if (setUsername.changing)
         {
+            touchControls.SetActive(false);
             if (usernameSet)
             {
                 ActivateStartGame(true);
             }
         }
-        if (!startSequence.DoneStartup && !gameOver)
+        if (!startSequence.DoneStartup && !gameOver && !options && !setUsername.changing && !settingScreenScale)
         {
             if (!startGame.activeSelf)
             {
@@ -328,6 +334,16 @@ public class GameManager : MonoBehaviour
         //    hsManager.WriteHighScoreTable();
         //}
         startGame.SetActive(activate);
+    }
+
+    public void EnterOptionsScreen()
+    {
+        options = true;
+    }
+
+    public void ExitOptionsScreen()
+    {
+        options = false;
     }
 
     public void GameQuit()
