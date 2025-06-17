@@ -73,9 +73,11 @@ public class GameManager : MonoBehaviour
     public bool optionSound = false;
     public bool startScreen = false;
 
+    public bool debugMode = false;
+
     private void Start()
     {
-        PlayerPrefs.DeleteAll();
+        //PlayerPrefs.DeleteAll();
         if(instance == null)
         {
             instance = this;
@@ -279,13 +281,14 @@ public class GameManager : MonoBehaviour
 
     public void GameEnd()
     {
+        touchControls.SetActive(false);
         endGame.SetActive(true);
         if(highScore > prevHighScore)
         {
             highScore = score;
             PlayerPrefs.SetInt("Best", highScore);
             UpdateScore();
-            google.SendHighScore(setUsername.username, highScore);
+            //google.SendHighScore(setUsername.username, highScore);
         }
         gameOver = true;
         gameStarted = false;
@@ -421,7 +424,10 @@ public class GameManager : MonoBehaviour
     {
         if (PlayerPrefs.HasKey("gameScale"))
         {
-            float gameScale = PlayerPrefs.GetFloat("gameScale");
+            Vector3 gameScale = Vector3.one * 1.25f;
+            gameScale.x = PlayerPrefs.GetFloat("gameScaleX");
+            gameScale.y = PlayerPrefs.GetFloat("gameScaleY");
+            gameScale.z = PlayerPrefs.GetFloat("gameScaleZ");
             scaleScreen.SetScreenScale(gameScale);
             optionScreenScale = true;
         }
@@ -436,7 +442,7 @@ public class GameManager : MonoBehaviour
         scaleScreen.screenScaleSet = false;
         ActivateStartGame(false);
         settingScreenScale = true;
-        scaleScreen.ShowScaleScreen();
+        scaleScreen.AutoScale();
     }
 
     public void FlipperLeftUp()

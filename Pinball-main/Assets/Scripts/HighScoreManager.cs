@@ -17,6 +17,9 @@ public class HighScoreManager : MonoBehaviour
     bool waitToFetch = false;
     bool waitToWrite = false;
 
+    // We're not ready for this yet, the Google solution was a hack from the start
+    bool online = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -29,39 +32,59 @@ public class HighScoreManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (waitToFetch)
+        if (online)
+        {
+            if (waitToFetch)
+            {
+                if (highScoresInfo != null && theHighScores != null)
+                {
+                    waitToFetch = false;
+                    WriteHighScoreTable();
+                }
+            }
+            if (waitToWrite)
+            {
+                if (!GameManager.instance.google.fetching)
+                {
+                    waitToWrite = false;
+                    SortHighScores();
+                    SortAndPrintHighScores();
+                }
+            }
+        }
+        else
         {
             if (highScoresInfo != null && theHighScores != null)
             {
-                waitToFetch = false;
                 WriteHighScoreTable();
-            }
-        }
-        if (waitToWrite)
-        {
-            if (!GameManager.instance.google.fetching)
-            {
-                waitToWrite = false;
                 SortHighScores();
-                PrintHighScores();
+                SortAndPrintHighScores();
             }
         }
     }
 
     public void WriteHighScoreTable()
     {
-        if (highScoresInfo != null && theHighScores != null)
+        if (online)
         {
-            ClearHighScores();
-            GameManager.instance.google.GetHighScores();
-            if (GameManager.instance.google.fetching)
+            if (highScoresInfo != null && theHighScores != null)
             {
-                waitToWrite = true;
+                //ClearHighScores();
+                GameManager.instance.google.GetHighScores();
+                if (GameManager.instance.google.fetching)
+                {
+                    waitToWrite = true;
+                }
+            }
+            else
+            {
+                waitToFetch = true;
             }
         }
         else
         {
-            waitToFetch = true;
+            //GameManager.instance.google.GetHighScores();
+            GetLocalHighScores();
         }
     }
 
@@ -94,7 +117,7 @@ public class HighScoreManager : MonoBehaviour
         //highScoresInfo.Sort();
     }
 
-    public void PrintHighScores()
+    public void SortAndPrintHighScores()
     {
         foreach (HighScoreInfo hs in highScoresInfo)
         {
@@ -151,6 +174,24 @@ public class HighScoreManager : MonoBehaviour
         HSobj.hsInfo.score = score;
         HSobj.hsInfo.placement = placement.ToString();
         theHighScores.Add(theHS);
+    }
+
+    private void GetLocalHighScores()
+    {
+        string highscoreString = PlayerPrefs.GetString("highscores", "");
+        if (highscoreString == "")
+        {
+            return;
+        }
+        string[] highscores = highscoreString.Split("~");
+        for (int i = 0; i < highscores.Length; i++)
+        {
+            string[] hsInfo = highscores[i].Split(",");
+            HighScoreInfo hs = new HighScoreInfo();
+            hs.name = hsInfo[0];
+            hs.score = int.Parse(hsInfo[1]);
+            AddToHighScoreList(hs);
+        }
     }
 
     public void ClearHighScores()
